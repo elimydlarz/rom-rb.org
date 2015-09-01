@@ -570,7 +570,7 @@ relations and mappers in any suitable order between invocations of
 <h4 id="mapping-tuples-to-models"><a href="mappers/models">Mapping Tuples to Models</a></h4>
 
 <p>The result of a mapping can be a model object, rather than a simple hash or array:</p>
-<pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">UserMapepr</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Mapper</span>
+<pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">UserMapper</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Mapper</span>
   <span class="n">model</span> <span class="no">User</span>
 <span class="k">end</span>
 
@@ -596,7 +596,7 @@ relations and mappers in any suitable order between invocations of
 </code></pre>
 
 <p>With the help of <code>embedded</code> we could apply transformations to the necessary level of nesting:</p>
-<pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">UserMapepr</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Mapper</span>
+<pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">UserMapper</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Mapper</span>
   <span class="n">relation</span> <span class="ss">:users</span>
   <span class="n">register_as</span> <span class="ss">:users</span>
 
@@ -641,7 +641,7 @@ relations and mappers in any suitable order between invocations of
 </code></pre>
 
 <p>With the sequence of several <code>step</code>-s we can perform a series of complex tranformations inside one mapper:</p>
-<pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">UserMapepr</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Mapper</span>
+<pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">UserMapper</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Mapper</span>
   <span class="n">relation</span> <span class="ss">:users</span>
   <span class="n">register_as</span> <span class="ss">:users</span>
 
@@ -739,7 +739,7 @@ relations and mappers in any suitable order between invocations of
   <span class="n">register_as</span> <span class="ss">:entity</span>
   <span class="n">relation</span> <span class="ss">:users</span>
 
-  <span class="k">class</span> <span class="nc">User</span>
+  <span class="n">model</span> <span class="no">User</span>
 <span class="k">end</span>
 
 <span class="n">users</span> <span class="o">=</span> <span class="no">ROM</span><span class="p">.</span><span class="nf">finalize</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">relation</span><span class="p">(</span><span class="ss">:users</span><span class="p">)</span>
