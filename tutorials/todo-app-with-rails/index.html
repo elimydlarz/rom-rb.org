@@ -161,6 +161,18 @@ bin/rails console
 
 <p>In a default Rails setup, the ROM environment is loaded from the standard <a href="http://guides.rubyonrails.org/configuring.html#configuring-active-record">ActiveRecord  configuration</a>. As long as the database specified there is supported by ROM SQL, no additional setup is necessary.</p>
 
+<h4 id="activerecord-less-cases">ActiveRecord-less cases</h4>
+
+<p>If ActiveRecord is not used, or there is no <code>database.yml</code> it&rsquo;s necessary to add an initializer.
+Easiest and preferable way is using a Database URL.</p>
+<pre class="highlight ruby"><code><span class="c1"># config/initializers/rom.rb</span>
+<span class="no">ROM</span><span class="o">::</span><span class="no">Rails</span><span class="o">::</span><span class="no">Railtie</span><span class="p">.</span><span class="nf">configure</span> <span class="k">do</span> <span class="o">|</span><span class="n">config</span><span class="o">|</span>
+  <span class="n">config</span><span class="p">.</span><span class="nf">gateways</span><span class="p">[</span><span class="ss">:default</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="ss">:sql</span><span class="p">,</span> <span class="no">ENV</span><span class="p">.</span><span class="nf">fetch</span><span class="p">(</span><span class="s1">'DATABASE_URL'</span><span class="p">)]</span>
+<span class="k">end</span>
+</code></pre>
+
+<p>Example of URL - <code>sqlite://db/development.sqlite3</code> or <code>jdbc:sqlite://db/development.sqlite3</code> (in case of jRuby).</p>
+
 <h3 id="working-with-rom-objects">Working with ROM objects</h3>
 
 <p>The Rails template introduces a convention for managing objects provided by ROM alongside the familiar Rails conventions.</p>
@@ -387,7 +399,7 @@ bin/rails console
   <span class="cp">&lt;%</span> <span class="n">tasks</span><span class="p">.</span><span class="nf">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">task</span><span class="o">|</span> <span class="cp">%&gt;</span>
     <span class="nt">&lt;li&gt;</span>
       <span class="nt">&lt;span&gt;</span><span class="cp">&lt;%=</span> <span class="n">task</span><span class="p">[</span><span class="ss">:title</span><span class="p">]</span> <span class="cp">%&gt;</span><span class="nt">&lt;/span&gt;</span>
-      <span class="nt">&lt;span&gt;</span><span class="cp">&lt;%=</span> <span class="n">status_label</span><span class="p">(</span><span class="n">task</span><span class="p">[</span><span class="ss">:is_complete</span><span class="p">])</span> <span class="cp">%&gt;</span><span class="nt">&lt;/span&gt;</span>
+      <span class="nt">&lt;span&gt;</span><span class="cp">&lt;%=</span> <span class="n">status_label</span><span class="p">(</span><span class="n">task</span><span class="p">[</span><span class="ss">:is_completed</span><span class="p">])</span> <span class="cp">%&gt;</span><span class="nt">&lt;/span&gt;</span>
     <span class="nt">&lt;/li&gt;</span>
   <span class="cp">&lt;%</span> <span class="k">end</span> <span class="cp">%&gt;</span>
 <span class="nt">&lt;/ul&gt;</span>
@@ -536,7 +548,7 @@ to define the <code>Task</code> class because they come out-of-the-box with the 
 
 <h2 id="forms-and-validation">Forms and Validation</h2>
 
-<p>Instead of mixing together the parts of an applicaton that query data and the parts that change data, ROM’s API splits these out into separate responsibilities.</p>
+<p>Instead of mixing together the parts of an application that query data and the parts that change data, ROM’s API splits these out into separate responsibilities.</p>
 
 <p>This might be disorienting at first if you’re used to ActiveRecord. Once you grok <a href="http://martinfowler.com/bliki/CQRS.html">CQRS</a>, the concept makes a whole lot more sense.</p>
 
@@ -547,7 +559,7 @@ to define the <code>Task</code> class because they come out-of-the-box with the 
 </code></pre>
 
 <p>Here’s how this command is registered and set up behind the scenes:</p>
-<pre class="highlight ruby"><code><span class="c1"># app/commands/tasks/create.rb</span>
+<pre class="highlight ruby"><code><span class="c1"># app/commands/task_commands/create.rb</span>
 
 <span class="k">module</span> <span class="nn">TaskCommands</span>
   <span class="k">class</span> <span class="nc">Create</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Commands</span><span class="o">::</span><span class="no">Create</span><span class="p">[</span><span class="ss">:sql</span><span class="p">]</span>
@@ -597,7 +609,9 @@ to define the <code>Task</code> class because they come out-of-the-box with the 
 <p>Notice that we also need to slot in references to the model and relation here, in order to connect this form to our existing ROM objects.</p>
 
 <p>In order to select and operate on individual objects, we also need to add a couple methods that access tasks by their ID:</p>
-<pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">TasksRelation</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Relation</span><span class="p">[</span><span class="ss">:sql</span><span class="p">]</span>
+<pre class="highlight ruby"><code><span class="c1"># app/relations/tasks_relation.rb</span>
+
+<span class="k">class</span> <span class="nc">TasksRelation</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Relation</span><span class="p">[</span><span class="ss">:sql</span><span class="p">]</span>
   <span class="k">def</span> <span class="nf">by_id</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
     <span class="n">where</span><span class="p">(</span><span class="ss">id: </span><span class="nb">id</span><span class="p">)</span>
   <span class="k">end</span>
@@ -741,7 +755,7 @@ to define the <code>Task</code> class because they come out-of-the-box with the 
 <h3 id="testing-relations">Testing Relations</h3>
 
 <p>You can run full integration tests on relations in the same way that you’d test any other data access object:</p>
-<pre class="highlight ruby"><code><span class="c1"># spec/relations/task_spec.rb</span>
+<pre class="highlight ruby"><code><span class="c1"># spec/relations/tasks_spec.rb</span>
 
 <span class="nb">require</span> <span class="s1">'rails_helper'</span>
 
@@ -801,11 +815,11 @@ to define the <code>Task</code> class because they come out-of-the-box with the 
 <p>In this tutorial we’ve taken a walk through a simple integration of ROM concepts into a very basic Rails application.</p>
 
 <ul>
-<li>We got up and running quickly with an application template and a brief disucussion of the rom-rails integration.</li>
+<li>We got up and running quickly with an application template and a brief discussion of the ROM-rails integration.</li>
 <li>Next we displayed a list of tasks on the index page of our new application. This showed us the basics of a ROM relation.</li>
 <li>A simple list of tasks wasn’t enough so we explored extending the tasks relation to give us a sorted list of tasks and use it in our views.</li>
-<li>Still not satisified we realized that our array of hashes returned from relations didn’t cut it. We set up a task mapper and a value object to give us a richer representation of data.</li>
-<li>All of that would be greate if we needed a read-only application. Managing tasks was next for us and there we learned about ROM commands and ROM command/query separation.</li>
+<li>Still not satisfied we realized that our array of hashes returned from relations didn’t cut it. We set up a task mapper and a value object to give us a richer representation of data.</li>
+<li>All of that would be great if we needed a read-only application. Managing tasks was next for us and there we learned about ROM commands and ROM command/query separation.</li>
 <li>Taking the command/query separation a little further helped us understand the ROM way of handling validations and errors.</li>
 </ul>
 
