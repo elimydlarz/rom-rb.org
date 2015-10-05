@@ -367,19 +367,19 @@ relations and mappers in any suitable order between invocations of
 <p>ROM mapper provides a rich DSL with a number of methods to transform the source into output domain objects. It supports:</p>
 
 <ul>
-<li><a href="mappers/filtering">Filtering Attributes</a></li>
-<li><a href="mappers/renaming">Renaming Attributes</a></li>
-<li><a href="mappers/wrapping">Wrapping Attributes</a></li>
-<li><a href="mappers/grouping">Grouping Tuples</a></li>
-<li><a href="mappers/folding">Folding Tuples</a></li>
-<li><a href="mappers/combining">Combining Tuples from Several Relations</a></li>
-<li><a href="mappers/models">Mapping Tuples to Models</a></li>
-<li><a href="mappers/embedded">Embedded Attributes</a></li>
+<li><a href="filtering">Filtering Attributes</a></li>
+<li><a href="renaming">Renaming Attributes</a></li>
+<li><a href="wrapping">Wrapping Attributes</a></li>
+<li><a href="grouping">Grouping Tuples</a></li>
+<li><a href="folding">Folding Tuples</a></li>
+<li><a href="combining">Combining Tuples from Several Relations</a></li>
+<li><a href="models">Mapping Tuples to Models</a></li>
+<li><a href="embedded">Embedded Attributes</a></li>
 </ul>
 
 <p>Below are some examples of the available transformations. For more details follow the corresponding link.</p>
 
-<h4 id="filtering-attributes"><a href="mappers/filtering">Filtering Attributes</a></h4>
+<h4 id="filtering-attributes"><a href="filtering">Filtering Attributes</a></h4>
 
 <p>You can either blacklist attributes:</p>
 <pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">UsersMapper</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Mapper</span>
@@ -407,7 +407,7 @@ relations and mappers in any suitable order between invocations of
 <span class="c1"># { id: 1, name: 'Joe' }</span>
 </code></pre>
 
-<h4 id="renaming-attributes"><a href="mappers/renaming">Renaming Attributes</a></h4>
+<h4 id="renaming-attributes"><a href="renaming">Renaming Attributes</a></h4>
 
 <p>Attributes can be renamed:</p>
 <pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">UsersMapper</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Mapper</span>
@@ -422,7 +422,7 @@ relations and mappers in any suitable order between invocations of
 <span class="c1"># { id: 1, name: 'Joe', login: 'joe@example.com' }</span>
 </code></pre>
 
-<h4 id="wrapping-attributes"><a href="mappers/wrapping">Wrapping Attributes</a></h4>
+<h4 id="wrapping-attributes"><a href="wrapping">Wrapping Attributes</a></h4>
 
 <p>Attributes can be nested inside a new object.</p>
 <pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">UsersMapper</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Mapper</span>
@@ -439,7 +439,7 @@ relations and mappers in any suitable order between invocations of
 <span class="c1"># { id: 1, name: 'Joe', contacts: { email: 'joe@example.com', skype: 'joe' } }</span>
 </code></pre>
 
-<h4 id="unwrapping-tuples"><a href="mappers/unwrapping">Unwrapping Tuples</a></h4>
+<h4 id="unwrapping-tuples"><a href="unwrapping">Unwrapping Tuples</a></h4>
 
 <p>Attributes can be pulled out of a nested object:</p>
 <pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">UsersMapper</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Mapper</span>
@@ -455,7 +455,7 @@ relations and mappers in any suitable order between invocations of
 <span class="c1"># { id: 1, name: 'Joe', email: 'joe@example.com', contacts: { skype:'joe' } }</span>
 </code></pre>
 
-<h4 id="grouping-tuples"><a href="mappers/grouping">Grouping Tuples</a></h4>
+<h4 id="grouping-tuples"><a href="grouping">Grouping Tuples</a></h4>
 
 <p>Objects can be grouped on certain attributes:</p>
 <pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">UsersMapper</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Mapper</span>
@@ -481,7 +481,7 @@ relations and mappers in any suitable order between invocations of
 <span class="c1"># ]</span>
 </code></pre>
 
-<h4 id="ungrouping-attributes"><a href="mappers/ungrouping">Ungrouping Attributes</a></h4>
+<h4 id="ungrouping-attributes"><a href="ungrouping">Ungrouping Attributes</a></h4>
 
 <p>Objects can be ungrouped resulting in a flattened structure:</p>
 <pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">UsersMapper</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Mapper</span>
@@ -507,7 +507,7 @@ relations and mappers in any suitable order between invocations of
 <span class="c1"># ]</span>
 </code></pre>
 
-<h4 id="folding-tuples"><a href="mappers/folding">Folding Tuples</a></h4>
+<h4 id="folding-tuples"><a href="folding">Folding Tuples</a></h4>
 <pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">UsersMapper</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Mapper</span>
   <span class="n">fold</span> <span class="ss">:contacts</span> <span class="k">do</span>
     <span class="n">attribute</span> <span class="ss">:email</span>
@@ -524,7 +524,7 @@ relations and mappers in any suitable order between invocations of
 <span class="c1"># [{ id: 1, name: 'Joe', contacts: ['joe@example.com', 'joe@doe.org'] }]</span>
 </code></pre>
 
-<h4 id="unfolding-attributes"><a href="mappers/unfolding">Unfolding Attributes</a></h4>
+<h4 id="unfolding-attributes"><a href="unfolding">Unfolding Attributes</a></h4>
 
 <p>Objects can be unfolded, resulting in a flattened structure:</p>
 <pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">UsersMapper</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Mapper</span>
@@ -541,7 +541,7 @@ relations and mappers in any suitable order between invocations of
 <span class="c1"># ]</span>
 </code></pre>
 
-<h4 id="combining-tuples-from-several-relations"><a href="mappers/combining">Combining Tuples from Several Relations</a></h4>
+<h4 id="combining-tuples-from-several-relations"><a href="combining">Combining Tuples from Several Relations</a></h4>
 <pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">Roles</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Relation</span><span class="p">[</span><span class="ss">:memory</span><span class="p">]</span>
   <span class="k">def</span> <span class="nf">for_users</span><span class="p">(</span><span class="n">users</span><span class="p">)</span>
     <span class="n">restrict</span><span class="p">(</span><span class="ss">user_id: </span><span class="n">users</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="o">|</span><span class="n">u</span><span class="o">|</span> <span class="n">u</span><span class="p">[</span><span class="ss">:id</span><span class="p">]</span> <span class="p">})</span>
@@ -567,7 +567,7 @@ relations and mappers in any suitable order between invocations of
 <span class="c1"># [{ id: 1, name: 'Joe', roles: [{ name: 'admin' }, { name: 'manager' }] }]</span>
 </code></pre>
 
-<h4 id="mapping-tuples-to-models"><a href="mappers/models">Mapping Tuples to Models</a></h4>
+<h4 id="mapping-tuples-to-models"><a href="models">Mapping Tuples to Models</a></h4>
 
 <p>The result of a mapping can be a model object, rather than a simple hash or array:</p>
 <pre class="highlight ruby"><code><span class="k">class</span> <span class="nc">UserMapper</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Mapper</span>
@@ -581,7 +581,7 @@ relations and mappers in any suitable order between invocations of
 <span class="c1"># [#&lt;User @id=1, @name='Joe'&gt;]</span>
 </code></pre>
 
-<h4 id="embedded-attributes"><a href="mappers/embedded">Embedded Attributes</a></h4>
+<h4 id="embedded-attributes"><a href="embedded">Embedded Attributes</a></h4>
 
 <p>Suppose we have a source with a deeply nested data to transform:</p>
 <pre class="highlight ruby"><code><span class="n">users</span> <span class="o">=</span> <span class="no">ROM</span><span class="p">.</span><span class="nf">env</span><span class="p">.</span><span class="nf">relation</span><span class="p">(</span><span class="ss">:users</span><span class="p">)</span>
@@ -690,7 +690,7 @@ relations and mappers in any suitable order between invocations of
 <span class="c1"># }</span>
 </code></pre>
 
-<p>Look at the <a href="mappers/sequencing">corresponding subsection</a> for further details.</p>
+<p>Look at the <a href="sequencing">corresponding subsection</a> for further details.</p>
 
 <h2 id="using-and-reusing-mappers">Using and Reusing Mappers</h2>
 
@@ -707,7 +707,7 @@ relations and mappers in any suitable order between invocations of
 <span class="n">users</span><span class="p">.</span><span class="nf">map_with</span><span class="p">(</span><span class="ss">:entity</span><span class="p">).</span><span class="nf">first</span> <span class="c1"># the alternative syntax</span>
 </code></pre>
 
-<p>Like <a href="relations#lazy-relations">relations</a>, <strong>mappers are applied lazily</strong> which allows you to compose relations and mappers together in an arbitrary order in the data pipeline. All the following definitions do the same thing:</p>
+<p>Like <a href="/buides/basics/relations#lazy-relations">relations</a>, <strong>mappers are applied lazily</strong> which allows you to compose relations and mappers together in an arbitrary order in the data pipeline. All the following definitions do the same thing:</p>
 <pre class="highlight ruby"><code><span class="n">users</span><span class="p">.</span><span class="nf">with_tasks</span><span class="p">.</span><span class="nf">with_tags</span><span class="p">.</span><span class="nf">as</span><span class="p">(</span><span class="ss">:entity</span><span class="p">)</span>
 <span class="n">users</span><span class="p">.</span><span class="nf">with_tasks</span><span class="p">.</span><span class="nf">as</span><span class="p">(</span><span class="ss">:entity</span><span class="p">).</span><span class="nf">with_tags</span>
 <span class="n">users</span><span class="p">.</span><span class="nf">as</span><span class="p">(</span><span class="ss">:entity</span><span class="p">).</span><span class="nf">with_tasks</span><span class="p">.</span><span class="nf">with_tags</span>
@@ -782,7 +782,7 @@ relations and mappers in any suitable order between invocations of
 <span class="c1"># { id: 1, name: 'Joe', email: 'joe@email.com', skype: 'joe' }</span>
 </code></pre>
 
-<p>Use this feature with care. There are <a href="mappers/reusing">some edge cases you should take into account</a>.</p>
+<p>Use this feature with care. There are <a href="reusing">some edge cases you should take into account</a>.</p>
 
 <h3 id="applying-mappers-to-nested-data">Applying Mappers to Nested Data</h3>
 
@@ -811,7 +811,7 @@ relations and mappers in any suitable order between invocations of
 
 <p>With this feature you can <em>extract</em> common transformations, and share them between various mappers.</p>
 
-<p>Use it with some care! There are <a href="mappers/wrapping#applying-another-mapper">edge cases you should take into account</a>.</p>
+<p>Use it with some care! There are <a href="wrapping#applying-another-mapper">edge cases you should take into account</a>.</p>
 
 <h2 id="custom-mappers">Custom Mappers</h2>
 

@@ -321,10 +321,12 @@ deletes it from the <code>source</code> relation, since this is our canonical so
 <h3 id="commands-update">Commands::Update</h3>
 
 <p>To implement an update command:</p>
-<pre class="highlight ruby"><code><span class="k">module</span> <span class="nn">ROM</span>
+<pre class="highlight ruby"><code><span class="nb">require</span> <span class="s1">'rom/commands/update'</span>
+
+<span class="k">module</span> <span class="nn">ROM</span>
   <span class="k">module</span> <span class="nn">ArrayAdapter</span>
     <span class="k">module</span> <span class="nn">Commands</span>
-      <span class="k">class</span> <span class="nc">Update</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Commands</span><span class="o">::</span><span class="no">Delete</span>
+      <span class="k">class</span> <span class="nc">Update</span> <span class="o">&lt;</span> <span class="no">ROM</span><span class="o">::</span><span class="no">Commands</span><span class="o">::</span><span class="no">Update</span>
         <span class="n">adapter</span> <span class="ss">:array</span>
 
         <span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
